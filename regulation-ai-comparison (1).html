@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Regulation vs AI — Full Comparison Index</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#F7F5F0;color:#1A1A18;padding:2rem 1.5rem;min-height:100vh}
+.wrap{max-width:860px;margin:0 auto}
+h1{font-size:22px;font-weight:500;margin-bottom:6px}
+.sub{font-size:13px;color:#888780;margin-bottom:1.75rem;line-height:1.6;max-width:640px}
+
+/* tabs */
+.tabs{display:flex;gap:6px;margin-bottom:1.5rem;border-bottom:1px solid #E2E0DA;padding-bottom:0}
+.tab{font-size:13px;padding:7px 16px;border:none;border-bottom:2px solid transparent;background:none;color:#888780;cursor:pointer;margin-bottom:-1px;transition:all 0.15s}
+.tab:hover{color:#1A1A18}
+.tab.on{color:#1A1A18;border-bottom-color:#1A1A18;font-weight:500}
+
+/* controls */
+.controls{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:1.25rem;align-items:center}
+.controls label{font-size:12px;color:#888780}
+select,input[type=text]{font-size:13px;padding:6px 10px;border:1px solid #D0CEC8;border-radius:6px;background:#fff;color:#1A1A18}
+input[type=text]{width:160px}
+
+/* view sections */
+.view{display:none}.view.on{display:block}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead th{font-size:11px;font-weight:500;color:#888780;text-align:left;padding:7px 8px;border-bottom:1px solid #E2E0DA;white-space:nowrap;cursor:pointer;user-select:none}
+thead th:hover{color:#1A1A18}
+tbody tr{border-bottom:1px solid #F0EEE8;transition:background 0.1s}
+tbody tr:hover{background:#F0EEE8}
+td{padding:7px 8px;vertical-align:middle}
+.cn{font-weight:500;color:#1A1A18}
+.rb{font-size:10px;padding:2px 6px;border-radius:4px;background:#F0EEE8;color:#888780;margin-left:5px}
+.bw{display:flex;align-items:center;gap:6px}
+.bb{width:70px;height:5px;border-radius:3px;background:#E2E0DA;overflow:hidden;flex-shrink:0}
+.bf{height:100%;border-radius:3px}
+.bv{font-size:12px;color:#888780;min-width:24px}
+.rk{font-size:12px;color:#888780}
+.gap-up{font-size:11px;color:#1D9E75;font-weight:500}
+.gap-dn{font-size:11px;color:#BA7517;font-weight:500}
+.qt{font-size:10px;padding:2px 7px;border-radius:4px;font-weight:500}
+.q1{background:#E1F5EE;color:#085041}
+.q2{background:#E6F1FB;color:#0C447C}
+.q3{background:#FFF3E0;color:#633806}
+.q4{background:#FDECEA;color:#791F1F}
+
+/* SCATTER */
+.chart-wrap{position:relative;width:100%;height:520px;background:#fff;border:1px solid #E2E0DA;border-radius:10px;padding:1.25rem}
+.tip{position:absolute;background:#fff;border:1px solid #E2E0DA;border-radius:8px;padding:10px 14px;font-size:12px;pointer-events:none;display:none;z-index:10;min-width:180px;box-shadow:0 2px 8px rgba(0,0,0,0.08)}
+.tip .tn{font-weight:500;font-size:14px;margin-bottom:5px}
+.tip .tr{display:flex;justify-content:space-between;gap:16px;color:#888780;font-size:12px;margin-bottom:3px}
+.tip .tv{color:#1A1A18;font-weight:500}
+.leg{display:flex;flex-wrap:wrap;gap:12px;margin-top:1rem;font-size:12px;color:#888780}
+.li{display:flex;align-items:center;gap:5px}
+.ld{width:9px;height:9px;border-radius:50%}
+
+/* QUADRANT */
+.quad-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:1rem}
+.quad-card{background:#fff;border:1px solid #E2E0DA;border-radius:10px;padding:1.25rem}
+.qc-head{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px}
+.qc-badge{font-size:11px;font-weight:500;padding:3px 8px;border-radius:4px;white-space:nowrap;flex-shrink:0;margin-top:2px}
+.qc-title{font-size:13px;font-weight:500;color:#1A1A18;line-height:1.4}
+.qc-desc{font-size:12px;color:#888780;margin-bottom:12px;line-height:1.6}
+.qc-stats{display:flex;gap:10px;margin-bottom:12px}
+.qc-stat{flex:1;background:#F7F5F0;border-radius:6px;padding:7px 10px;text-align:center}
+.qc-stat-l{font-size:10px;color:#888780;margin-bottom:2px}
+.qc-stat-v{font-size:16px;font-weight:500;color:#1A1A18}
+.qc-countries{font-size:12px;color:#888780;line-height:1.8}
+.qc-countries span{color:#1A1A18;margin-right:4px}
+.stat-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:1.5rem}
+.sc{background:#fff;border:1px solid #E2E0DA;border-radius:8px;padding:10px 14px}
+.sc-l{font-size:11px;color:#888780;margin-bottom:3px}
+.sc-v{font-size:18px;font-weight:500;color:#1A1A18}
+
+.note{font-size:11px;color:#B0AEA8;margin-top:1.5rem;line-height:1.7;border-top:1px solid #E2E0DA;padding-top:1rem}
+.note strong{color:#888780}
+
+@media(max-width:580px){
+  .quad-grid{grid-template-columns:1fr}
+  .bb{width:48px}
+  .rb{display:none}
+  input[type=text]{width:120px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Regulation vs AI Leadership — Full Comparison</h1>
+<p class="sub">A side-by-side index of regulatory freedom and AI leadership across 40 countries. Switch between views using the tabs below.</p>
+
+<div class="tabs">
+  <button class="tab on" onclick="setView('table')">Side-by-side table</button>
+  <button class="tab" onclick="setView('scatter')">Scatter chart</button>
+  <button class="tab" onclick="setView('quad')">Quadrant analysis</button>
+</div>
+
+<!-- ══════════════════════════════════════════
+     VIEW 1 — TABLE
+══════════════════════════════════════════ -->
+<div id="v-table" class="view on">
+  <div class="controls">
+    <div><label>Region &nbsp;</label>
+    <select id="t-reg">
+      <option value="all">All regions</option>
+      <option value="North America">North America</option>
+      <option value="Europe">Europe</option>
+      <option value="Asia-Pacific">Asia-Pacific</option>
+      <option value="Middle East">Middle East</option>
+      <option value="Latin America">Latin America</option>
+      <option value="Africa">Africa</option>
+    </select></div>
+    <div><label>Sort &nbsp;</label>
+    <select id="t-srt">
+      <option value="reg_rank">Regulation rank</option>
+      <option value="ai_rank">AI rank</option>
+      <option value="reg">Regulation score</option>
+      <option value="ai">AI score</option>
+      <option value="gap">Largest gap</option>
+      <option value="country">Country name</option>
+    </select></div>
+    <input type="text" id="t-sr" placeholder="Search country...">
+  </div>
+
+  <table>
+    <thead><tr>
+      <th onclick="tSort('reg_rank')">#</th>
+      <th onclick="tSort('country')">Country ↕</th>
+      <th onclick="tSort('reg')">Regulation ↕</th>
+      <th onclick="tSort('reg_rank')" style="width:32px">Rk</th>
+      <th onclick="tSort('ai')">AI score ↕</th>
+      <th onclick="tSort('ai_rank')" style="width:32px">Rk</th>
+      <th onclick="tSort('gap')">Gap ↕</th>
+      <th>Quadrant</th>
+    </tr></thead>
+    <tbody id="t-body"></tbody>
+  </table>
+</div>
+
+<!-- ══════════════════════════════════════════
+     VIEW 2 — SCATTER
+══════════════════════════════════════════ -->
+<div id="v-scatter" class="view">
+  <div class="controls">
+    <div><label>Highlight region &nbsp;</label>
+    <select id="s-reg">
+      <option value="all">All regions</option>
+      <option value="North America">North America</option>
+      <option value="Europe">Europe</option>
+      <option value="Asia-Pacific">Asia-Pacific</option>
+      <option value="Middle East">Middle East</option>
+      <option value="Latin America">Latin America</option>
+      <option value="Africa">Africa</option>
+    </select></div>
+    <div><label>Labels &nbsp;</label>
+    <select id="s-lbl">
+      <option value="top">Top 15 countries</option>
+      <option value="all">All countries</option>
+      <option value="none">None</option>
+    </select></div>
+  </div>
+  <div class="chart-wrap">
+    <div id="tip" class="tip"></div>
+    <canvas id="s-chart"></canvas>
+  </div>
+  <div class="leg" id="s-leg"></div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     VIEW 3 — QUADRANT
+══════════════════════════════════════════ -->
+<div id="v-quad" class="view">
+  <div class="stat-cards" id="q-stats"></div>
+  <div class="quad-grid" id="q-grid"></div>
+</div>
+
+<p class="note">
+  <strong>Regulation score (0–10, higher = less regulated):</strong> composite of OECD EPL Index, OECD FDI Restrictiveness Index 2023, and Fraser EFW Area 5 regulation score (credit, labour, business regulation across 165 jurisdictions).<br>
+  <strong>AI score (0–100):</strong> equal-weighted composite of Stanford HAI AI Index 2025 (investment + research), Tortoise Global AI Index 2024 (talent + infrastructure), and Oxford Insights Government AI Readiness Index 2025.<br>
+  Quadrant medians: Regulation 6.3 · AI 56. Sources: Fraser Institute EFW 2024 · OECD 2023 · Stanford HAI 2025 · Tortoise 2024 · Oxford Insights 2025.
+</p>
+</div>
+
+<script>
+const DATA=[
+  {c:"United States",  r:"North America", x:8.6,y:92},
+  {c:"China",          r:"Asia-Pacific",  x:4.9,y:82},
+  {c:"United Kingdom", r:"Europe",        x:8.1,y:80},
+  {c:"Singapore",      r:"Asia-Pacific",  x:9.0,y:78},
+  {c:"France",         r:"Europe",        x:7.2,y:76},
+  {c:"Canada",         r:"North America", x:8.3,y:75},
+  {c:"Germany",        r:"Europe",        x:7.7,y:74},
+  {c:"Israel",         r:"Middle East",   x:7.0,y:73},
+  {c:"South Korea",    r:"Asia-Pacific",  x:7.5,y:73},
+  {c:"Japan",          r:"Asia-Pacific",  x:7.9,y:72},
+  {c:"Australia",      r:"Asia-Pacific",  x:8.3,y:67},
+  {c:"Netherlands",    r:"Europe",        x:7.9,y:68},
+  {c:"Sweden",         r:"Europe",        x:7.8,y:66},
+  {c:"Switzerland",    r:"Europe",        x:8.8,y:67},
+  {c:"UAE",            r:"Middle East",   x:7.5,y:65},
+  {c:"Saudi Arabia",   r:"Middle East",   x:6.5,y:60},
+  {c:"India",          r:"Asia-Pacific",  x:6.2,y:59},
+  {c:"Denmark",        r:"Europe",        x:8.4,y:64},
+  {c:"Finland",        r:"Europe",        x:8.2,y:62},
+  {c:"Ireland",        r:"Europe",        x:8.4,y:63},
+  {c:"Belgium",        r:"Europe",        x:7.8,y:60},
+  {c:"Taiwan",         r:"Asia-Pacific",  x:7.7,y:61},
+  {c:"Spain",          r:"Europe",        x:7.0,y:59},
+  {c:"Italy",          r:"Europe",        x:6.8,y:56},
+  {c:"Poland",         r:"Europe",        x:7.0,y:50},
+  {c:"Brazil",         r:"Latin America", x:5.8,y:46},
+  {c:"Malaysia",       r:"Asia-Pacific",  x:6.2,y:40},
+  {c:"Russia",         r:"Europe",        x:5.2,y:44},
+  {c:"Turkey",         r:"Europe",        x:5.9,y:39},
+  {c:"Mexico",         r:"Latin America", x:6.9,y:39},
+  {c:"Ukraine",        r:"Europe",        x:5.0,y:33},
+  {c:"Chile",          r:"Latin America", x:7.4,y:32},
+  {c:"South Africa",   r:"Africa",        x:6.5,y:35},
+  {c:"Indonesia",      r:"Asia-Pacific",  x:6.3,y:33},
+  {c:"Argentina",      r:"Latin America", x:3.2,y:32},
+  {c:"Vietnam",        r:"Asia-Pacific",  x:5.5,y:28},
+  {c:"Egypt",          r:"Africa",        x:5.8,y:28},
+  {c:"Nigeria",        r:"Africa",        x:5.5,y:23},
+  {c:"Pakistan",       r:"Asia-Pacific",  x:5.0,y:20},
+  {c:"Kenya",          r:"Africa",        x:5.8,y:21},
+];
+
+const COLORS={
+  "North America":"#1D9E75",
+  "Europe":"#185FA5",
+  "Asia-Pacific":"#D4537E",
+  "Middle East":"#BA7517",
+  "Latin America":"#534AB7",
+  "Africa":"#888780"
+};
+
+const QMETA={
+  Q1:{label:"High regulation freedom + High AI",badge:"Q1",cls:"q1",col:"#085041",
+      desc:"Open markets and AI leadership travel together. The US, UK, Canada, Singapore, Germany, and France anchor this quadrant. Light-touch regulation appears to be a meaningful enabler of AI investment and talent concentration."},
+  Q2:{label:"Low regulation freedom + High AI",badge:"Q2",cls:"q2",col:"#0C447C",
+      desc:"China sits here almost alone — the only major economy combining heavy factor market regulation with frontier AI capability. State-directed industrial policy can drive AI, but the model is difficult to replicate and carries significant governance trade-offs."},
+  Q3:{label:"High regulation freedom + Low AI",badge:"Q3",cls:"q3",col:"#633806",
+      desc:"The opportunity gap. Chile, Denmark, Ireland, and Finland have the regulatory conditions for AI leadership but haven't yet converted openness into AI maturity. The most actionable policy finding in the dataset."},
+  Q4:{label:"Low regulation freedom + Low AI",badge:"Q4",cls:"q4",col:"#791F1F",
+      desc:"The dual constraint. Argentina, Russia, most of Africa, and Pakistan face both heavy regulation and low AI capability — the hardest position to escape, since capital controls suppress the private investment that drives AI ecosystems."},
+};
+
+const REG_MED=6.3, AI_MED=56;
+
+// rank and quadrant
+const sR=[...DATA].sort((a,b)=>b.x-a.x);
+const sA=[...DATA].sort((a,b)=>b.y-a.y);
+DATA.forEach(d=>{
+  d.reg_rank=sR.findIndex(x=>x.c===d.c)+1;
+  d.ai_rank=sA.findIndex(x=>x.c===d.c)+1;
+  d.gap=Math.abs(d.x*10-d.y);
+  d.gap_dir=d.y>d.x*10?"AI leads":"Reg leads";
+  d.q=d.x>=REG_MED&&d.y>=AI_MED?"Q1":d.x<REG_MED&&d.y>=AI_MED?"Q2":d.x>=REG_MED&&d.y<AI_MED?"Q3":"Q4";
+});
+
+const TOP15=[...DATA].sort((a,b)=>(b.x*10+b.y)-(a.x*10+a.y)).slice(0,15).map(d=>d.c);
+
+// ── view switching ──
+let curView="table";
+function setView(v){
+  curView=v;
+  document.querySelectorAll(".view").forEach(el=>el.classList.remove("on"));
+  document.getElementById("v-"+v).classList.add("on");
+  document.querySelectorAll(".tab").forEach((t,i)=>t.classList.toggle("on",["table","scatter","quad"][i]===v));
+  if(v==="scatter") buildScatter();
+  if(v==="quad") buildQuad();
+}
+
+// ── TABLE ──
+let tCol="reg_rank", tAsc=true;
+function tSort(col){tAsc=tCol===col?!tAsc:col==="reg_rank"||col==="ai_rank";tCol=col;renderTable();}
+
+function barCol(v,type){
+  if(type==="reg") return v>=8?"#1D9E75":v>=6.5?"#185FA5":v>=5?"#BA7517":"#D85A30";
+  return v>=75?"#1D9E75":v>=55?"#185FA5":v>=35?"#BA7517":"#D85A30";
+}
+
+function renderTable(){
+  const reg=document.getElementById("t-reg").value;
+  const sr=document.getElementById("t-sr").value.toLowerCase();
+  const srtKey=document.getElementById("t-srt").value;
+  tCol=srtKey; tAsc=["reg_rank","ai_rank"].includes(srtKey);
+  let d=[...DATA];
+  if(reg!=="all") d=d.filter(x=>x.r===reg);
+  if(sr) d=d.filter(x=>x.c.toLowerCase().includes(sr));
+  d.sort((a,b)=>{
+    if(tCol==="country") return tAsc?a.c.localeCompare(b.c):b.c.localeCompare(a.c);
+    return tAsc?a[tCol]-b[tCol]:b[tCol]-a[tCol];
+  });
+  const qm=QMETA;
+  document.getElementById("t-body").innerHTML=d.map(x=>`<tr>
+    <td class="rk">${x.reg_rank}</td>
+    <td><span class="cn">${x.c}</span><span class="rb">${x.r}</span></td>
+    <td><div class="bw"><div class="bb"><div class="bf" style="width:${x.x*10}%;background:${barCol(x.x,'reg')}"></div></div><span class="bv">${x.x.toFixed(1)}</span></div></td>
+    <td class="rk">${x.reg_rank}</td>
+    <td><div class="bw"><div class="bb"><div class="bf" style="width:${x.y}%;background:${barCol(x.y,'ai')}"></div></div><span class="bv">${x.y}</span></div></td>
+    <td class="rk">${x.ai_rank}</td>
+    <td class="${x.gap_dir==="AI leads"?"gap-up":"gap-dn"}">${x.gap.toFixed(0)}pt<br><span style="font-size:10px;font-weight:400;color:#888780">${x.gap_dir}</span></td>
+    <td><span class="qt ${qm[x.q].cls}">${x.q}</span></td>
+  </tr>`).join("");
+}
+
+document.getElementById("t-reg").addEventListener("change",renderTable);
+document.getElementById("t-sr").addEventListener("input",renderTable);
+document.getElementById("t-srt").addEventListener("change",renderTable);
+renderTable();
+
+// ── SCATTER ──
+let scChart=null;
+function buildScatter(){
+  if(scChart){scChart.destroy();scChart=null;}
+  const reg=document.getElementById("s-reg").value;
+  const lblMode=document.getElementById("s-lbl").value;
+  const gc="rgba(0,0,0,0.06)", tc="#888780", mc="rgba(0,0,0,0.12)";
+
+  const datasets=Object.keys(COLORS).map(region=>{
+    const pts=DATA.filter(d=>d.r===region);
+    const dimmed=reg!=="all"&&reg!==region;
+    const col=COLORS[region];
+    const h=parseInt(col.slice(1),16);
+    const rv=(h>>16)&255,gv=(h>>8)&255,bv=h&255;
+    const fill=dimmed?`rgba(${rv},${gv},${bv},0.1)`:col;
+    return{label:region,data:pts.map(d=>({x:d.x,y:d.y,label:d.c,region:d.r})),
+      backgroundColor:fill,borderColor:fill,pointRadius:5,pointHoverRadius:7,borderWidth:0};
+  });
+
+  const medP={id:"med",afterDraw(ch){
+    const {ctx,chartArea:{left,right,top,bottom},scales:{x,y}}=ch;
+    ctx.save();ctx.setLineDash([5,4]);ctx.strokeStyle=mc;ctx.lineWidth=1;
+    const mx=x.getPixelForValue(REG_MED);
+    ctx.beginPath();ctx.moveTo(mx,top);ctx.lineTo(mx,bottom);ctx.stroke();
+    const my=y.getPixelForValue(AI_MED);
+    ctx.beginPath();ctx.moveTo(left,my);ctx.lineTo(right,my);ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.font="10px -apple-system,sans-serif";ctx.fillStyle=tc;
+    ctx.fillText("Q1 open + AI-led",x.getPixelForValue(6.4),y.getPixelForValue(98));
+    ctx.fillText("Q2 regulated + AI-led",x.getPixelForValue(2.2),y.getPixelForValue(98));
+    ctx.fillText("Q3 open + AI-nascent",x.getPixelForValue(6.4),y.getPixelForValue(5));
+    ctx.fillText("Q4 regulated + nascent",x.getPixelForValue(2.2),y.getPixelForValue(5));
+    ctx.restore();
+  }};
+
+  const lblP={id:"lbl",afterDatasetsDraw(ch){
+    const {ctx,scales:{x,y}}=ch;
+    ctx.save();
+    ch.data.datasets.forEach(ds=>{
+      ds.data.forEach(pt=>{
+        if(lblMode==="none") return;
+        if(lblMode==="top"&&!TOP15.includes(pt.label)) return;
+        const dimmed=reg!=="all"&&reg!==pt.region;
+        if(dimmed) return;
+        const px=x.getPixelForValue(pt.x),py=y.getPixelForValue(pt.y);
+        ctx.font="500 11px -apple-system,sans-serif";
+        ctx.fillStyle=COLORS[pt.region];
+        ctx.textAlign="left";
+        ctx.fillText(pt.label,px+8,py+4);
+      });
+    });
+    ctx.restore();
+  }};
+
+  const canvas=document.getElementById("s-chart");
+  scChart=new Chart(canvas,{
+    type:"scatter",data:{datasets},
+    options:{responsive:true,maintainAspectRatio:false,
+      layout:{padding:{top:16,right:130,bottom:8,left:8}},
+      plugins:{legend:{display:false},tooltip:{enabled:false,external(ctx){
+        const tip=document.getElementById("tip");
+        if(ctx.tooltip.opacity===0){tip.style.display="none";return;}
+        const dp=ctx.tooltip.dataPoints?.[0];if(!dp){tip.style.display="none";return;}
+        const pt=dp.raw;
+        tip.innerHTML=`<div class="tn">${pt.label}</div>
+          <div class="tr"><span>Regulation</span><span class="tv">${pt.x.toFixed(1)}/10</span></div>
+          <div class="tr"><span>AI score</span><span class="tv">${pt.y}/100</span></div>
+          <div class="tr"><span>Region</span><span class="tv">${pt.region}</span></div>`;
+        let lx=ctx.tooltip.caretX+12,ly=ctx.tooltip.caretY-10;
+        if(lx+190>canvas.clientWidth) lx=ctx.tooltip.caretX-200;
+        tip.style.left=lx+"px";tip.style.top=ly+"px";tip.style.display="block";
+      }}},
+      scales:{
+        x:{title:{display:true,text:"Regulation freedom  (0 = most regulated → 10 = least regulated)",color:tc,font:{size:11}},
+          min:2,max:10,grid:{color:gc},ticks:{color:tc,font:{size:11}}},
+        y:{title:{display:true,text:"AI leadership  (0 = nascent → 100 = global leader)",color:tc,font:{size:11}},
+          min:0,max:105,grid:{color:gc},ticks:{color:tc,font:{size:11}}}
+      }
+    },
+    plugins:[medP,lblP]
+  });
+
+  document.getElementById("s-leg").innerHTML=Object.entries(COLORS).map(([r,c])=>
+    `<span class="li"><span class="ld" style="background:${c}"></span>${r}</span>`).join("");
+}
+
+document.getElementById("s-reg").addEventListener("change",buildScatter);
+document.getElementById("s-lbl").addEventListener("change",buildScatter);
+
+// ── QUADRANT ──
+function buildQuad(){
+  const quads=["Q1","Q2","Q3","Q4"];
+  const groups=Object.fromEntries(quads.map(q=>[q,DATA.filter(d=>d.q===q)]));
+
+  document.getElementById("q-stats").innerHTML=`
+    <div class="sc"><div class="sc-l">Total countries</div><div class="sc-v">40</div></div>
+    <div class="sc"><div class="sc-l">Q1 — open + AI-led</div><div class="sc-v">${groups.Q1.length}</div></div>
+    <div class="sc"><div class="sc-l">Q2 — regulated + AI-led</div><div class="sc-v">${groups.Q2.length}</div></div>
+    <div class="sc"><div class="sc-l">Q3 — opportunity gap</div><div class="sc-v">${groups.Q3.length}</div></div>
+    <div class="sc"><div class="sc-l">Q4 — dual constraint</div><div class="sc-v">${groups.Q4.length}</div></div>
+  `;
+
+  document.getElementById("q-grid").innerHTML=quads.map(q=>{
+    const m=QMETA[q];
+    const items=groups[q];
+    const avgReg=(items.reduce((s,d)=>s+d.x,0)/items.length).toFixed(1);
+    const avgAI=Math.round(items.reduce((s,d)=>s+d.y,0)/items.length);
+    return`<div class="quad-card">
+      <div class="qc-head">
+        <span class="qc-badge ${m.cls}">${m.badge}</span>
+        <span class="qc-title">${m.label}</span>
+      </div>
+      <p class="qc-desc">${m.desc}</p>
+      <div class="qc-stats">
+        <div class="qc-stat"><div class="qc-stat-l">Countries</div><div class="qc-stat-v">${items.length}</div></div>
+        <div class="qc-stat"><div class="qc-stat-l">Avg regulation</div><div class="qc-stat-v">${avgReg}</div></div>
+        <div class="qc-stat"><div class="qc-stat-l">Avg AI score</div><div class="qc-stat-v">${avgAI}</div></div>
+      </div>
+      <div class="qc-countries">${items.map(d=>`<span>${d.c}</span>`).join("")}</div>
+    </div>`;
+  }).join("");
+}
+</script>
+</body>
+</html>
